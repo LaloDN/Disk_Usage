@@ -1,5 +1,10 @@
 # Manual del script
 
+## Módulos
++ argparse: Se utiliza para configurar los argumentos como el disco que se va a analizar o el porcentaje que se requiere para las alertas.
++ shutil: Se utiliza para mover los archivos de lugar.
++ json, request: Son utilizados para enviar la petición al bot de slack.
++ os: Es utilizado para operaciones con archivos y para ejecutar comandos de bash desde python.
 ## Main 
 ### Argparse
 
@@ -16,8 +21,7 @@ Después de definir los argumentos del argparse viene una pequeña comprobación
 
 Por último se hace la llamda a las funciones disk_usage y count_folder, pero antes de hacer la llamda a la función count_folder revisa si existe la carpeta que vamos a analizar en el sistema, si no existe imprime un mensaje de error y sale del programa. Después de esto el script termina su ejecución.
 
----
-## slackMessage
+## slackMessage()
 
 > Descripción: Envia un mensaje personalizado a un canal de slack con la ayuda de un bot.
 > Párametros: recibe message, una cadena con el mensaje que se va a enviar al canal de slack.
@@ -25,8 +29,7 @@ Por último se hace la llamda a las funciones disk_usage y count_folder, pero an
 Esta función recibe el mensaje que se quiere enviar por parámetro, dentro de la función crea un JSON con una única propiedad llamada text y como valor tendrá el mensaje que recibe por parámetro.
 Por último hace un request de tipo post, para esta petición se le pasa la llave para utilizar el bot de slack y el JSON convertido a cadena con la función dumps.
 
----
-## count_folder
+## count_folder()
 
 > Descripción: Cuenta el número de archivos que hay dentro de un directorio y envía un mensaje a slack.
 > Parámetros: recibe folder, una cadena con el path hacía la carpeta que queremos monitorear y n_files, el número de archivos que necesita sobrepasar la carpeta para que envíe una alerta.
@@ -34,10 +37,10 @@ Por último hace un request de tipo post, para esta petición se le pasa la llav
 Lo primero que se hace es utilizar una funcione one liner para obtener el número total de archivos (sin contar los directorios) dentro de la carpeta que le especifiquemos de manera recursiva y guardarlo dentro de una variable.
 Esta variable se va a comparar contra n_files, si el número de archivos dentro de la carpeta resulta ser mayor, entonces se va a enviar la alerta a slack con la función slackMessage, con la cantidad de archivos dentro de la carpeta.
 
----
-## disk_usage
+## disk_usage()
 
 > Descripción Revisa el porcentaje en uso de un disco y envia alertas o mueve los archivos a una carpeta de respaldo según sea el caso.
+
 > Parámetros: recibe disk, una cadena con el nombre del disco montado en el sistema que se va a analizar, p_warning que es el porcentaje en uso del disco que se requiere para enviar una alerta a slack, p_max es el porcentaje en uso del disco que se necesita para empezar a mover TODOS los archivos dentro del disco a una carpeta de respaldo y backup_folder, la ruta con la carpeta en donde se hará el respaldo.
 
 ### Obtención del porcentaje

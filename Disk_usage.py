@@ -9,7 +9,7 @@ def slackMessage(message: str) -> None:
     data={
         "text": message
     }
-    requests.post('https://hooks.slack.com/services/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',json.dumps(data))
+    requests.post('YOUR_SLACK_HOOK',json.dumps(data))
 
 def disk_usage(disk: str,p_warning: float, p_max:float, backup_folder: str)->None:
     """Función para revisar el porcentaje de un disco en uso y mandar alertas """
